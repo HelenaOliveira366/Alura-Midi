@@ -1,8 +1,15 @@
 //Função que toca o som
-function playSound(idSound){
-    //captura o id do som e toca com .play()
-    //O id especificado deve ser dinâmico e será especificado através do parâmetro da função 'idSound'
-    document.querySelector(idSound).play(); //querySelector retorna o primeiro elemento que tenha o seletor especificado
+function playSound(selectorSound){
+    //captura o elemento digitado e recebido pela função
+    const element = document.querySelector(selectorSound);
+
+    //se o elemento não for nulo e for do tipo audio (localName identifica como sendo audio ou não), o som é executado através da função play(), caso contrário, é exibido mensagem de erro
+    if(element != null && element.localName === 'audio'){
+        element.play();
+    }
+    else{
+        console.log("Elemento não encontrado ou seletor inválido!")
+    }
 }
 
 // Constante armazena todas as teclas que contém a classe .tecla - querySelectorAll seleciona todos os elementos com o seletor especificado entre parenteses e retorna uma lista com estes elementos
@@ -23,5 +30,17 @@ for (let counter = 0; counter < keyList.length; counter++){
     key.onclick = function(){
         //.classList retorna uma lista com todas as clases que o elemento especificado possui - classes são representadas dentro de '', ou seja é um texto e podemos manipular esses texto conforme nossa preferência - vc pode testar no console: keyList[indiceElemento].classList[indiceClasse]
         playSound(idSound);
+    }
+
+    //Adicionar a classe "ativa" nos botões quando a tecla espaço ou enter for clicada - propriedade 'onkeydown' é usado juntamente com uma função para identificar a tecla pressionada capturado pelo parâmetro da função e o atributo code identifica o nome da tecla, usada na condição if
+    key.onkeydown = function(eventClick){
+        if(eventClick.code === 'Space' || eventClick.code === 'Enter'){
+            key.classList.add('ativa');
+        }
+    }
+
+    //Remover a classe das teclas quando soltadas
+    key.onkeyup = function(){
+        key.classList.remove('ativa');
     }
 }
